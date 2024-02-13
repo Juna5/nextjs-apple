@@ -25,13 +25,15 @@ export const basketSlice = createSlice({
             );
 
             let newBasket = [...state.items];
-            if (index > 0) {
+
+            if (index >= 0) {
                 newBasket.splice(index, 1);
             } else {
                 console.log(
-                    `Cant remove Product (id: ${action.payload.id} as its not in basket`
+                    `Cant remove product (id: ${action.payload.id}) as its not in basket!`
                 );
             }
+
             state.items = newBasket;
         },
     },
@@ -46,11 +48,10 @@ export const selectBasketItemsWithId = (state: RootState, id: string) => {
     state.basket.items.filter((item: Product) => item._id == id);
 };
 
-export const selectBasketTotal = (state: RootState) => {
+export const selectBasketTotal = (state: RootState) =>
     state.basket.items.reduce(
         (total: number, item: Product) => (total += item.price),
         0
     );
-};
 
 export default basketSlice.reducer;
