@@ -9,7 +9,8 @@ import CheckOutProduct from "../components/CheckOutProduct";
 import Button from "../components/Button";
 import { NumericFormat } from "react-number-format";
 import { ChevronDownIcon } from "@heroicons/react/outline";
-import { fetchPostJSON } from "./api/api-helpers";
+import getStripe from "../utils/get-stripejs";
+import { fetchPostJSON } from "../utils/api-helpers";
 
 export default function Checkout() {
     const items = useSelector(selectBasketItems);
@@ -18,7 +19,6 @@ export default function Checkout() {
     const [groupedItemsInBasket, setGroupedItemsInBasket] = useState(
         {} as { [key: string]: Product[] }
     );
-
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -26,25 +26,42 @@ export default function Checkout() {
             (results[item._id] = results[item._id] || []).push(item);
             return results;
         }, {} as { [key: string]: Product[] });
+
         setGroupedItemsInBasket(groupedItems);
     }, [items]);
 
-    const checkoutSession = async () => {
+    const createCheckoutSession = async () => {
         setLoading(true);
 
         const checkoutSession: Stripe.Checkout.Session = await fetchPostJSON(
             "/api/checkout_sessions",
-            { items: items }
+            {
+                items: items,
+            }
         );
 
+        // Internal Server Error
         if ((checkoutSession as any).statusCode === 500) {
             console.error((checkoutSession as any).message);
             return;
         }
 
-        // const stripe = await getEffectiveConstraintOfTypeParameter()
-    };
+        // Redirect to checkout
+        const stripe = await getStripe();
+        const { error } = await stripe!.redirectToCheckout({
+            // Make the id field from the Checkout Session creation API response
+            // available to this file, so you can provide it as parameter here
+            // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+            sessionId: checkoutSession.id,
+        });
 
+        // If `redirectToCheckout` fails due to a browser or network
+        // error, display the localized error message to your customer
+        // using `error.message`.
+        console.warn(error.message);
+
+        setLoading(false);
+    };
     return (
         <div className="min-h-screen overflow-hidden bg-[#E7ECEE]">
             <Head>
@@ -152,7 +169,13 @@ export default function Checkout() {
                                                 />
                                             </span>
                                         </h4>
-                                        <Button title="Check Out" />
+                                        <Button
+                                            noIcon
+                                            loading={loading}
+                                            title="Check Out"
+                                            width="w-full"
+                                            onClick={createCheckoutSession}
+                                        />
                                     </div>
                                 </div>
                             </div>
