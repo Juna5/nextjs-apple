@@ -43,15 +43,15 @@ export default function Success({ products }: Props) {
     });
 
     const isTableMobile = useMediaQuery({ query: "(max-width: 1024px)" });
-    // const showOrderSummaryCondition = isTableMobile ? showOrderSummary : true;
-    // const subtotal = products.reduce(
-    //     (acc, product) => acc + product.price.unit_amount,
-    //     0
-    // );
+    const showOrderSummaryCondition = isTableMobile ? showOrderSummary : true;
+    const subtotal = products.reduce(
+        (acc, product) => acc + product.price.unit_amount,
+        0
+    );
 
-    // const handleShowOrderSummary = () => {
-    //     setShowOrderSummary(!showOrderSummary);
-    // };
+    const handleShowOrderSummary = () => {
+        setShowOrderSummary(!showOrderSummary);
+    };
     return (
         <div>
             <Head>
@@ -123,17 +123,17 @@ export default function Success({ products }: Props) {
                         <p className="hidden lg:inline">
                             Need help? Contact us
                         </p>
-                        {/* {mounted && (
+                        {mounted && (
                             <Button
                                 title="Continue Shopping"
                                 onClick={() => router.push("/")}
                                 width={isTableMobile ? "w-full" : undefined}
                                 padding="py-4"
                             />
-                        )} */}
+                        )}
                     </div>
                 </section>
-                {/* {mounted && (
+                {mounted && (
                     <section className=" border-y border-l border-gray-300 bg-[#FAFAFA] lg:order-2 lg:col-span-4 lg:h-screen lg:border-y-0">
                         <div
                             className={`w-full ${
@@ -243,7 +243,7 @@ export default function Success({ products }: Props) {
                             </div>
                         )}
                     </section>
-                )} */}
+                )}
             </main>
         </div>
     );
