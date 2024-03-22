@@ -33,25 +33,25 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 export default function Success({ products }: Props) {
     console.log(products);
 
-    const router = useRouter();
-    const { session_id } = router.query;
-    const [mounted, setMounted] = useState(false);
-    const [showOrderSummary, setShowOrderSummary] = useState(false);
+    // const router = useRouter();
+    // const { session_id } = router.query;
+    // const [mounted, setMounted] = useState(false);
+    // const [showOrderSummary, setShowOrderSummary] = useState(false);
 
-    useEffect(() => {
-        setMounted(true);
-    });
+    // useEffect(() => {
+    //     setMounted(true);
+    // });
 
-    const isTableMobile = useMediaQuery({ query: "(max-width: 1024px)" });
-    const showOrderSummaryCondition = isTableMobile ? showOrderSummary : true;
-    const subtotal = products.reduce(
-        (acc, product) => acc + product.price.unit_amount,
-        0
-    );
+    // const isTableMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    // const showOrderSummaryCondition = isTableMobile ? showOrderSummary : true;
+    // const subtotal = products.reduce(
+    //     (acc, product) => acc + product.price.unit_amount,
+    //     0
+    // );
 
-    const handleShowOrderSummary = () => {
-        setShowOrderSummary(!showOrderSummary);
-    };
+    // const handleShowOrderSummary = () => {
+    //     setShowOrderSummary(!showOrderSummary);
+    // };
     return (
         <div>
             <Head>
@@ -91,7 +91,7 @@ export default function Success({ products }: Props) {
                         </div>
                         <div className="">
                             <p className="text-sm text-gray-600">
-                                Order #{session_id?.slice(-5)}
+                                {/* Order #{session_id?.slice(-5)} */}
                             </p>
                             <h4 className="text-lg">Thank you </h4>
                         </div>
@@ -123,17 +123,17 @@ export default function Success({ products }: Props) {
                         <p className="hidden lg:inline">
                             Need help? Contact us
                         </p>
-                        {mounted && (
+                        {/* {mounted && (
                             <Button
                                 title="Continue Shopping"
                                 onClick={() => router.push("/")}
                                 width={isTableMobile ? "w-full" : undefined}
                                 padding="py-4"
                             />
-                        )}
+                        )} */}
                     </div>
                 </section>
-                {mounted && (
+                {/* {mounted && (
                     <section className=" border-y border-l border-gray-300 bg-[#FAFAFA] lg:order-2 lg:col-span-4 lg:h-screen lg:border-y-0">
                         <div
                             className={`w-full ${
@@ -243,7 +243,7 @@ export default function Success({ products }: Props) {
                             </div>
                         )}
                     </section>
-                )}
+                )} */}
             </main>
         </div>
     );
