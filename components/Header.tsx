@@ -7,10 +7,12 @@ import {
 } from "@heroicons/react/outline";
 import { useSelector } from "react-redux";
 import { selectBasketItems } from "../redux/basketSlice";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Header() {
-    const session = true;
+    const { data: session } = useSession();
     const items = useSelector(selectBasketItems);
+
     return (
         <header className="sticky top-0 z-30 flex w-full items-center justify-between bg-[#e7ecee] p-4">
             <div className="flex items-center justify-center md:w-1/5">
@@ -55,15 +57,20 @@ export default function Header() {
                 {session ? (
                     <Image
                         src={
+                            session.user?.image ||
                             "https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-1.jpg"
                         }
                         alt="img"
                         className="cursor-pointer rounded-full"
                         width={34}
                         height={34}
+                        onClick={() => signOut()}
                     />
                 ) : (
-                    <UserIcon className="header-icon" />
+                    <UserIcon
+                        className="header-icon"
+                        onClick={() => signIn()}
+                    />
                 )}
             </div>
         </header>
